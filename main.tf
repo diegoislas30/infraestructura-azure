@@ -31,4 +31,3 @@ resource "azurerm_resource_group" "rg-terraform-storage" {
   location = azurerm_resource_group.rg-terraform.location
 }
 
-S
