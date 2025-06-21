@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Permite ejecución manual desde GitHub UI
+  workflow_dispatch:
 
 jobs:
   terraform:
@@ -30,10 +30,7 @@ jobs:
       - name: Plan de ejecución
         run: terraform plan -out=tfplan
 
-      - name: Aprobación manual antes de aplicar
-        uses: hmarr/auto-approve-action@v2
-        if: github.event_name == 'workflow_dispatch'
-
-      - name: Aplicar cambios (solo si fue aprobado manualmente)
+      - name: Aplicar cambios (requiere aprobación)
         run: terraform apply tfplan
         if: github.event_name == 'workflow_dispatch'
+        environment: produccion
