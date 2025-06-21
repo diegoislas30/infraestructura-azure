@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  terraform:
+  terraform-plan:
     runs-on: ubuntu-latest
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -30,7 +30,35 @@ jobs:
       - name: Plan de ejecución
         run: terraform plan -out=tfplan
 
+      - name: Guardar plan
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfplan
+          path: tfplan
+
+  terraform-apply:
+    needs: terraform-plan
+    runs-on: ubuntu-latest
+    environment: produccion
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.7.5
+
+      - name: Descargar plan
+        uses: actions/download-artifact@v3
+        with:
+          name: tfplan
+
       - name: Aplicar cambios (requiere aprobación)
         run: terraform apply tfplan
-        if: github.event_name == 'workflow_dispatch'
-        environment: produccion
