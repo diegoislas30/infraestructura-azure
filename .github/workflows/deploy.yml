@@ -1,33 +1,39 @@
-name: Terraform Azure Deploy
+name: Deploy Infraestructura Azure
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch: # Permite ejecución manual desde GitHub UI
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4
+      - name: Checkout repositorio
+        uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.8.0
+          terraform_version: 1.7.5
 
-      - name: Autenticación en Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Terraform Init
+      - name: Inicializar Terraform
         run: terraform init
 
-      - name: Terraform Plan
-        run: terraform plan
+      - name: Plan de ejecución
+        run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      - name: Aprobación manual antes de aplicar
+        uses: hmarr/auto-approve-action@v2
+        if: github.event_name == 'workflow_dispatch'
+
+      - name: Aplicar cambios (solo si fue aprobado manualmente)
+        run: terraform apply tfplan
+        if: github.event_name == 'workflow_dispatch'
