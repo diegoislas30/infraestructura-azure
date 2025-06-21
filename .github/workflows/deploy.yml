@@ -30,7 +30,7 @@ jobs:
       - name: Plan de ejecución
         run: terraform plan -out=tfplan
 
-      - name: Subir plan como artefacto
+      - name: Guardar archivo tfplan
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
@@ -39,8 +39,7 @@ jobs:
   terraform-apply:
     needs: terraform-plan
     runs-on: ubuntu-latest
-    environment:
-      name: produccion  # Debe estar creado en GitHub Settings > Environments y tener aprobadores configurados
+    environment: produccion
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -60,6 +59,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan
+          path: .
+
+      - name: Inicializar Terraform
+        run: terraform init
 
       - name: Aplicar cambios (requiere aprobación)
         run: terraform apply tfplan
