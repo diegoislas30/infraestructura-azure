@@ -31,3 +31,9 @@ resource "azurerm_resource_group" "rg-terraform-storage" {
   location = azurerm_resource_group.rg-terraform.location
 }
 
+resource "azurerm_resource_group" "rg-terraform-aks" {
+  name     = "terraform-poc-aks"
+  location = azurerm_resource_group.rg-terraform.location
+}
+
+
