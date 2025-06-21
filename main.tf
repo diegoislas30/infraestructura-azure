@@ -37,3 +37,24 @@ resource "azurerm_resource_group" "rg-terraform-aks" {
 }
 
 
+resource "azurerm_virtual_network" "vnet-terraform-aks" {
+  name                = "vnet-terraform-aks"
+  address_space       = ["20.0.0.0/16"]
+  location            = azurerm_resource_group.rg-terraform-aks.location
+  resource_group_name = azurerm_resource_group.rg-terraform-aks.name
+  tags = {
+    environment = "Terraform"
+  }
+
+}
+
+resource "azurerm_subnet" "subnet-terraform-aks" {
+  name                 = "subnet-terraform-aks"
+  resource_group_name  = azurerm_resource_group.rg-terraform-aks.name
+  virtual_network_name = azurerm_virtual_network.vnet-terraform-aks.name
+  address_prefixes     = ["20.0.0.0/24"]
+  service_endpoints    = ["Microsoft.Storage"]
+}
+
+
+
