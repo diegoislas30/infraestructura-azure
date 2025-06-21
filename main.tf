@@ -26,23 +26,9 @@ resource "azurerm_subnet" "subnet-terraform" {
 
 }
 
-resource "azurerm_virtual_network" "vnet-terraform01" {
-  name                = "vnet-terraform01"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg-terraform.location
-  resource_group_name = azurerm_resource_group.rg-terraform.name
-  tags = {
-    environment = "Terraform"
-  }
+resource "azurerm_resource_group" "rg-terraform-storage" {
+  name     = "terraform-poc-storage"
+  location = azurerm_resource_group.rg-terraform.location
 }
 
-resource "azurerm_subnet" "subnet-terraform01" {
-  name                 = "subnet-terraform01"
-  resource_group_name  = azurerm_resource_group.rg-terraform.name
-  virtual_network_name = azurerm_virtual_network.vnet-terraform01.name
-  address_prefixes     = ["10.0.0.0/24"]
-  service_endpoints    = ["Microsoft.Storage"]
-}
-
-
-
+S
