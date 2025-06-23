@@ -3,7 +3,13 @@ module "resource_group" {
 }
 
 
-module "vnet" {
-  source   = "./modules/vnets"
+module "vnet01" {
+  source              = "./modules/vnets"
+  vnet_name           = "vnet-rg2"
+  address_space       = ["10.1.0.0/16"]
+  resource_group_name = "rg-ptmigracion"
+  location            = "eastus"
 }
+
+
 
