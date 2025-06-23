@@ -1,10 +1,10 @@
-resource "azurerm_resource_group" "this" {
-  name    = var.name
-  location = var.location
+resource "azurerm_resourece_group" "resource_group01" {
+  name     = "terraform_poc"
+  location = "West Europe"
 
   tags = {
-    environment = "poc"
-    created_by  = "terraform"
+    environment = "Terraform"
+    created_by  = "Terraform"
   }
+  
 }
-
