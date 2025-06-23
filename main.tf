@@ -1,9 +1,9 @@
-module "resource_group" {
-  source             = "./modules/resources_group"
-  for_each       = { for rg in var.resource_groups : rg.name => rg }
+module "resource_groups" {
+  source = "./modules/resources_group"
+  for_each = { for rg in var.resource_groups : rg.name => rg }
 
-  name             = each.value.name
-  location         = each.value.location
+  name     = each.value.name
+  location = each.value.location
 }
 
 module "vnets" {
@@ -15,4 +15,3 @@ module "vnets" {
   location            = each.value.location
   resource_group_name = each.value.resource_group
 }
-
