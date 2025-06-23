@@ -8,6 +8,4 @@ resource "azurerm_virtual_network" "vnet" {
     environment = "production"
     owner       = "team-a"
   }
-
 }
-
