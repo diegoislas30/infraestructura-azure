@@ -1,9 +1,7 @@
-variable "rg_name" {
-  type        = string
-  description = "Nombre del Resource Group"
+variable "name" {
+  type = string
 }
 
 variable "location" {
-  type        = string
-  description = "Ubicación"
+  type = string
 }
