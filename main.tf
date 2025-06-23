@@ -1,6 +1,6 @@
 module "resource_group" {
   source             = "./modules/resources_group"
-  for for_each       = { for rg in var.resource_groups : rg.name => rg }
+  for_each       = { for rg in var.resource_groups : rg.name => rg }
 
   name             = each.value.name
   location         = each.value.location
