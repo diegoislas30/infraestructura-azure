@@ -9,6 +9,8 @@ module "vnet01" {
   address_space       = ["10.1.0.0/16"]
   resource_group_name = "rg-ptmigracion"
   location            = "eastus"
+
+  depends_on = [module.resource_group]  # ✅ Aquí es donde se debe poner
 }
 
 
