@@ -1,13 +1,17 @@
-resource "azurerm_resource_group" "this" {
-  name     = var.name
-  location = var.location
+module "resource_group" {
+  source             = "./modules/resource_group"
+  for for_each       = { for rg in var.resource_groups : rg.name => rg }
+
+  name             = each.value.name
+  location         = each.value.location
 }
 
+module "vnets" {
+  source = "./modules/vnets"
+  for_each = { for vnet in var.vnets : vnet.name => vnet }
 
-module "vnet01" {
-  source              = "./modules/vnets"
-  vnet_name           = "vnet-rg2"
-  address_space       = ["10.0.0.0/16"]
-  location            = "eastus"
-  resource_group_name = "rg-ptmmigracion" # ya existe
+  vnet_name           = each.value.name
+  address_space       = each.value.address_space
+  location            = each.value.location
+  resource_group_name = each.value.resource_group
 }
