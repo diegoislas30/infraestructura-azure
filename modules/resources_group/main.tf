@@ -1,5 +1,10 @@
-module "resource_group" {
-  source   = "./modules/resource_group"
-  name     = var.rg_name
+resource "azurerm_resource_group" "resource_group" {
+  name    = var.name
   location = var.location
+
+  tags = {
+    environment = "poc"
+    created_by  = "terraform"
+  }
 }
+
