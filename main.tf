@@ -1,5 +1,6 @@
-module "resource_group" {
-  source   = "./modules/resources_group"
+resource "azurerm_resource_group" "this" {
+  name     = var.name
+  location = var.location
 }
 
 

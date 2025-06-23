@@ -15,3 +15,16 @@ resource "azurerm_resource_group" "rg2" {
 }
 
 
+resource "azurerm_resource_group" "pruebasterraform" {
+  name     = "terraform-poc"
+  location = "eastus"
+
+  tags = {
+    environment = "production"
+    owner       = "team-a"
+  }
+}
+
+
+
+
