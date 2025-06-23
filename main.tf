@@ -1,60 +1,9 @@
-# Trigger GitHub Actions run
 
-resource "azurerm_resource_group" "rg-terraform" {
-  name     = "terraform-poc"
-  location = var.location
-}
+module "resource_group" {
+  source = "./modules/resource_group"
 
-
-resource "azurerm_virtual_network" "vnet-terraform" {
-  name                = "vnet-terraform"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg-terraform.location
-  resource_group_name = azurerm_resource_group.rg-terraform.name
-  tags = {
-    environment = "Terraform"
-  }
-}
-
-resource "azurerm_subnet" "subnet-terraform" {
-  name                 = "subnet-terraform"
-  resource_group_name  = azurerm_resource_group.rg-terraform.name
-  virtual_network_name = azurerm_virtual_network.vnet-terraform.name
-  address_prefixes     = ["10.0.1.0/24"]
-  service_endpoints    = ["Microsoft.Storage"]
+  resource_group_name = var.resource_group_name
+  location            = var.locatiom
   
-
 }
-
-resource "azurerm_resource_group" "rg-terraform-storage" {
-  name     = "terraform-poc-storage"
-  location = azurerm_resource_group.rg-terraform.location
-}
-
-resource "azurerm_resource_group" "rg-terraform-aks" {
-  name     = "terraform-poc-aks"
-  location = azurerm_resource_group.rg-terraform.location
-}
-
-
-resource "azurerm_virtual_network" "vnet-terraform-aks" {
-  name                = "vnet-terraform-aks"
-  address_space       = ["20.0.0.0/16"]
-  location            = azurerm_resource_group.rg-terraform-aks.location
-  resource_group_name = azurerm_resource_group.rg-terraform-aks.name
-  tags = {
-    environment = "Terraform"
-  }
-
-}
-
-resource "azurerm_subnet" "subnet-terraform-aks" {
-  name                 = "subnet-terraform-aks"
-  resource_group_name  = azurerm_resource_group.rg-terraform-aks.name
-  virtual_network_name = azurerm_virtual_network.vnet-terraform-aks.name
-  address_prefixes     = ["20.0.0.0/24"]
-  service_endpoints    = ["Microsoft.Storage"]
-}
-
-
 
