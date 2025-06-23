@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg" {
 
 resource "azurerm_resource_group" "rg2" {
   name     = "rg-ptmmigracion"
-  location = "easus"
+  location = "eastus"
 
     tags = {
         environment = "production"
