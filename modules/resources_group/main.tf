@@ -1,10 +1,5 @@
-resource "azurerm_resource_group" "resource_group" {
-  name     = var.location.eastus
-  location = var.location.eastus
-
-  tags = {
-    environment = "Terraform"
-    created_by  = "Terraform"
-  }
+module "resource_group" {
+  source   = "./modules/resource_group"
+  name     = var.rg_name
+  location = var.location
 }
-

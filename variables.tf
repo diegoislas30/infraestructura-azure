@@ -1,8 +1,9 @@
-variable "location" {
-  description = "The Azure region where the resources will be created."
+variable "rg_name" {
   type        = string
-  default     = "eastus"
+  description = "Nombre del Resource Group"
 }
 
-
-
+variable "location" {
+  type        = string
+  description = "Ubicación"
+}
